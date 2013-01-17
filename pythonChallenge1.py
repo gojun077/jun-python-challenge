@@ -5,7 +5,7 @@ import string
 
 cstring = "g fmnc wms bgblr rpylqjyrc gr zw fylb. rfyrq ufyr amknsrcpq \
 ypc dmp. bmgle gr gl zw fylb gq glcddgagclr ylb rfyr'q ufw rfgq rcvr \
-gq qm jmle. sqgle qrpgle.kyicrpylq() gq pcamkkclbcb. lmu ynnjw ml rfc\
+gq qm jmle. sqgle qrpgle.kyicrpylq() gq pcamkkclbcb. lmu ynnjw ml rfc \
 spj."
 
 cList = []
@@ -19,12 +19,11 @@ for i in range(len(cList)):
     if ord(cList[i]) == 121 or ord(cList[i]) == 122:
         newchar = ord(cList[i]) - 24
         cList[i] = chr(newchar)
-    # don't shift ASCII code for punctuation or whitespace
-    elif string.punctuation in cList[i]:
+    # don't shift ASCII code for punctuation
+    elif cList[i] in string.punctuation:
         pass
-    elif cList[i] == ' ':
-        pass
-    elif cList[i] == '.':
+    # don't shift ASCII code for whitespace
+    elif cList[i] in string.whitespace:
         pass
     # shift alphabet 2 chars to the right
     else:
