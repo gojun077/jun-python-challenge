@@ -17,7 +17,12 @@ print(counter)
 
 # convert list 'match' back to string
 cString1 = ''.join(results)
-# filter out all upper-case letters from string
-cleanStr = cString1.translate(None, string.uppercase)
+print(cString1)
+
+results1 = re.findall(r"[A-Z][A-Z][A-Z][a-z][A-Z][A-Z][A-Z]", cString1)
+cString2 = ''.join(results1)
+
+# filter out all upper-case letters from cString2
+cleanStr = cString2.translate(None, string.uppercase)
 
 print(cleanStr)
