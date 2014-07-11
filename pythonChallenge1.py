@@ -48,3 +48,4 @@ def shiftChars(los):
 doctest.testmod()
 
 print(' '.join(shiftChars(cList)))
+print(shiftChars(['http://www.pythonchallenge.com/pc/def/map.html']))
