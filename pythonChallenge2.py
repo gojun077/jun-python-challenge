@@ -1,4 +1,5 @@
 # Python Challenge Question 2
+#http://www.pythonchallenge.com/pc/def/ocr.html
 #Image: An open book between two orange pillows
 #Hint: Recognize the characters. Maybe they are in the book,
 #but MAYBE they are in the page source.
