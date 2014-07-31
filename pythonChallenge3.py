@@ -65,6 +65,9 @@ def stripUpper(inList):
     '''
     regex = r'[A-Z]+' # match 1 or more uppercase letters
     outList = [re.sub(regex, '', str) for str in inList]
+    #remove all empty strings from outList
+    while '' in outList:
+        del outList[outList.index('')]
     return outList
 
 if __name__ == "__main__":
@@ -76,7 +79,16 @@ resultL = []
 
 with open(FILENAME, 'r') as garbledInput:
     for line in garbledInput:
-       #resultL.append(''.join(stripUpper(findMiddle(line))))
-        print(findMiddle(line))
+       resultL.append(stripUpper(findMiddle(line)))
 
-#print(resultL)
+#remove all empty lists from resultL
+while [] in resultL:
+    del resultL[resultL.index([])]
+
+#join all strings in sublists into one long string
+finalStr = ''
+for i in range(len(resultL)):
+    for j in range(len(resultL[i])):
+        finalStr += resultL[i][j]
+
+print(finalStr)
