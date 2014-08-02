@@ -19,71 +19,38 @@ def XXXoXXX(inStr):
     '''
     String -> ListOfString
 
-    Given an input string containing only upper- and lower-case letters
-    return a list of strings that matches the regex pattern:
-    1. [at least one non-uppercase letter] followed by
+    Given an input string containing only upper-and-lowercase letters,
+    match the following regex pattern:
+
+    1. [one non-uppercase letter] followed by
     2. [exactly three uppercase letters] followed by
     3. [exactly one lowercase letter] followed by
     4. [exactly three uppercase letters] followed by
-    5. [at least one non-uppercase letter]
+    5. [one non-uppercase letter]
 
-    [^A-Z]+[A-Z]{3}[a-z][A-Z]{3}[^A-Z]+
+    and then from within the pattern, return #3 above -- the lowercase
+    letter in between 'lUUU' and 'UUUl' where 'l' = lowercase ltr
+    and 'U' = UPPERCASE ltr
 
     >>> XXXoXXX('GdqIQNlQSLidb')
-    ['IQNlQSLidb']
+    ['l']
 
     >>> XXXoXXX('cZoExqHxUzeOEKiVEYjR')
-    ['zeOEKiVEYj']
+    ['i']
 
     >>> XXXoXXX('VJYxwaZADnMCZqT')
-    ['xwaZADnMCZq']
+    ['n']
 
     >>> XXXoXXX('FuCNDeHSBjgsgA')
-    ['uCNDeHSBjgsg']
+    ['e']
 
     >>> XXXoXXX('XXXXXXXXXXXXXXXXXXo')
     []
     '''
-    regex = r'[a-z][A-Z]{3}[a-z][A-Z]{3}[a-z]'
+    regex = r'[a-z][A-Z]{3}([a-z])[A-Z]{3}[a-z]'
     matches = re.findall(regex, inStr)
 
     return matches
-
-def pluckMiddle(inList):
-    '''
-    ListOfString -> ListofString
-
-    Given a list of strings, pluck out the following pattern of
-    chars:
-    1. [exactly three uppercase letters] followed by
-    2. [exactly one lowercase letter] followed by
-    3. [exactly three uppercase letters]
-
-    Then remove all uppercase letters from the resulting string
-
-    >>> pluckMiddle(['IQNlQSLidb'])
-    ['l']
-
-    >>> pluckMiddle(['zeOEKiVEYj'])
-    ['i']
-
-    >>> pluckMiddle(['xwaZADnMCZq'])
-    ['n']
-
-    >>> pluckMiddle(['uCNDeHSBjgsg', 'aAAAbBBBcccc'])
-    ['e', 'b']
-    '''
-    sixCharL = []
-    ThOnTh = r'[A-Z]{3}[a-z][A-Z]{3}' #Match pattern XXXoXXX
-    for string in inList:
-        sixCharL.extend(re.findall(ThOnTh, string))
-
-    regex = r'[A-Z]+' #find all uppercase letters
-    singles = []
-
-    for string in sixCharL:
-        singles.append(re.sub(regex, '', string))
-    return singles
 
 if __name__ == "__main__":
     import doctest
@@ -94,6 +61,6 @@ resultL = []
 
 with open(FILENAME, 'r') as garbledInput:
     for line in garbledInput:
-       resultL.extend(pluckMiddle(XXXoXXX(line)))
+       resultL.extend(XXXoXXX(line))
 
 print(resultL)
