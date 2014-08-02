@@ -5,70 +5,87 @@
 #Hint: One small letter, surrounded by EXACTLY three big bodyguards on each
 #of its sides.
 
-#Notes: I think we have to search through the string and pluck out
+#Note 1: I think we have to search through the string and pluck out
 #the lower-case letters that are in between 3 upper-case letters on
 #either side
 
+#Note 2: If the lowercase letter is surrounded by more than 3 uppercase
+#letters on each side, it should not match
+# ex: XXXXoXXX, AAAAAAbAAAA
+
 import re
 
-def findMiddle(inStr):
+def XXXoXXX(inStr):
     '''
     String -> ListOfString
 
     Given an input string containing only upper- and lower-case letters
-    return a list of strings that match the regex pattern:
-    [A-Z]{3}[a-z][A-Z]
+    return a list of strings that matches the regex pattern:
+    1. [at least one non-uppercase letter] followed by
+    2. [exactly three uppercase letters] followed by
+    3. [exactly one lowercase letter] followed by
+    4. [exactly three uppercase letters] followed by
+    5. [at least one non-uppercase letter]
 
-    >>> findMiddle('XXXoXXX')
-    ['XXXoXXX']
+    [^A-Z]+[A-Z]{3}[a-z][A-Z]{3}[^A-Z]+
 
-    >>> findMiddle('XXXoYYXoxXXo')
-    ['XXXoYYX']
+    >>> XXXoXXX('GdqIQNlQSLidb')
+    ['IQNlQSLidb']
 
-    >>> findMiddle('XXXoYXZoABC')
-    ['XXXoYXZ', 'YXZoABC']
+    >>> XXXoXXX('cZoExqHxUzeOEKiVEYjR')
+    ['zeOEKiVEYj']
 
-    >>> findMiddle('XXXoYXZoABCeQTH')
-    ['XXXoYXZ', 'YXZoABC', 'ABCeQTH']
+    >>> XXXoXXX('VJYxwaZADnMCZqT')
+    ['xwaZADnMCZq']
 
-    >>> findMiddle('XXXXXXXXXXXXXXXXXXo')
+    >>> XXXoXXX('FuCNDeHSBjgsgA')
+    ['uCNDeHSBjgsg']
+
+    >>> XXXoXXX('XXXXXXXXXXXXXXXXXXo')
     []
     '''
-    #uses a look-ahead assertion to match pattern as well
-    #as overlapping patterns
-    regex = r'(?=([A-Z]{3}[a-z][A-Z]{3}))'
-    return re.findall(regex, inStr)
+    regex = r'[^A-Z]+[A-Z]{3}[a-z][A-Z]{3}[^A-Z]+'
+    matches = re.findall(regex, inStr)
 
-def stripUpper(inList):
+    return matches
+
+def pluckMiddle(inList):
     '''
     ListOfString -> ListofString
 
-    Given a list of strings where each string contains 3
-    uppercase letters followed by 1 lowercase letter followed by
-    3 more uppercase letters, remove all uppercase letters from
-    each string
+    Given a list of strings, pluck out the following pattern of
+    chars:
+    1. [exactly three uppercase letters] followed by
+    2. [exactly one lowercase letter] followed by
+    3. [exactly three uppercase letters]
 
-    >>> stripUpper(['XXXaXXX'])
-    ['a']
+    Then remove all uppercase letters from the resulting string
 
-    >>> stripUpper(['XXXbYYX'])
-    ['b']
+    >>> pluckMiddle(['IQNlQSLidb'])
+    ['l']
 
-    >>> stripUpper(['XXXeYXZ', 'YXZfABC'])
-    ['e', 'f']
+    >>> pluckMiddle(['zeOEKiVEYj'])
+    ['i']
 
-    >>> stripUpper(['XXXoYXZ', 'YXZoABC', 'ABCeQTH'])
-    ['o', 'o', 'e']
+    >>> pluckMiddle(['xwaZADnMCZq'])
+    ['n']
 
-    >>> stripUpper(['XXXYXZ', 'YXZABC', 'ABCQTH'])
-    ['', '', '']
+    >>> pluckMiddle(['uCNDeHSBjgsg', 'aAAAbBBBcccc'])
+    ['e', 'b']
     '''
-    regex = r'[A-Z]+' # match 1 or more uppercase letters
-    outList = [re.sub(regex, '', str) for str in inList]
-    #remove all empty strings from outList
-    while '' in outList:
-        del outList[outList.index('')]
-    return outList
+    sixCharL = []
+    ThOnTh = r'[A-Z]{3}[a-z][A-Z]{3}' #Match pattern XXXoXXX
+    for string in inList:
+        sixCharL.extend(re.findall(ThOnTh, string))
+
+    print(sixCharL)
+
+    regex = r'[A-Z]+' #find all uppercase letters
+    singles = []
+
+    for string in sixCharL:
+        singles.append(re.sub(regex, '', string))
+    return singles
 
 if __name__ == "__main__":
     import doctest
@@ -79,16 +96,6 @@ resultL = []
 
 with open(FILENAME, 'r') as garbledInput:
     for line in garbledInput:
-       resultL.append(stripUpper(findMiddle(line)))
+       resultL.extend(pluckMiddle(XXXoXXX(line)))
 
-#remove all empty lists from resultL
-while [] in resultL:
-    del resultL[resultL.index([])]
-
-#join all strings in sublists into one long string
-finalStr = ''
-for i in range(len(resultL)):
-    for j in range(len(resultL[i])):
-        finalStr += resultL[i][j]
-
-print(finalStr)
+print(resultL)
