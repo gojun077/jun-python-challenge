@@ -44,7 +44,7 @@ def XXXoXXX(inStr):
     >>> XXXoXXX('XXXXXXXXXXXXXXXXXXo')
     []
     '''
-    regex = r'[^A-Z]+[A-Z]{3}[a-z][A-Z]{3}[^A-Z]+'
+    regex = r'[a-z]+[A-Z]{3}[a-z][A-Z]{3}[a-z]+'
     matches = re.findall(regex, inStr)
 
     return matches
@@ -77,8 +77,6 @@ def pluckMiddle(inList):
     ThOnTh = r'[A-Z]{3}[a-z][A-Z]{3}' #Match pattern XXXoXXX
     for string in inList:
         sixCharL.extend(re.findall(ThOnTh, string))
-
-    print(sixCharL)
 
     regex = r'[A-Z]+' #find all uppercase letters
     singles = []
