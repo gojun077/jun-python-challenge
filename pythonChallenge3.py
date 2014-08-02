@@ -44,7 +44,7 @@ def XXXoXXX(inStr):
     >>> XXXoXXX('XXXXXXXXXXXXXXXXXXo')
     []
     '''
-    regex = r'[a-z]+[A-Z]{3}[a-z][A-Z]{3}[a-z]+'
+    regex = r'[a-z][A-Z]{3}[a-z][A-Z]{3}[a-z]'
     matches = re.findall(regex, inStr)
 
     return matches
